@@ -45,6 +45,12 @@ public class LightBeam
 
     }
 
+    private void ChangeColor(Color color)
+    {
+        laser.endColor = color;
+        laser.startColor = color;
+    }
+
     private void CheckHit(RaycastHit hit, Vector3 direction)
     {
         if (hit.collider.tag.Equals("Mirror"))
@@ -57,6 +63,15 @@ public class LightBeam
         else if (hit.collider.tag.Equals("Glass"))
         {
             Vector3 pos = hit.point + new Vector3(.2f*direction.x, .2f*direction.y, 0);
+            Vector3 dir = direction;
+
+            CastLaser(pos, dir);
+        }
+        else if (hit.collider.tag.Equals("Blue Gem"))
+        {
+            ChangeColor(Color.blue);
+            Debug.Log("Blued");
+            Vector3 pos = hit.point + new Vector3(1f * direction.x, 1f * direction.y, 0);
             Vector3 dir = direction;
 
             CastLaser(pos, dir);

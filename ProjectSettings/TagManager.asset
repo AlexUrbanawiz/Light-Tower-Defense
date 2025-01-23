@@ -7,6 +7,16 @@ TagManager:
   - Mirror
   - Glass
   - Blue Gem
+  - Red Gem
+  - Yellow Gem
+  - Green Gem
+  - Magenta Gem
+  - Red
+  - Yellow
+  - Green
+  - Blue
+  - Magenta
+  - White
   layers:
   - Default
   - TransparentFX

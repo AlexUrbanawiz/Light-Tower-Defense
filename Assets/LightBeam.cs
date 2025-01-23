@@ -7,13 +7,16 @@ public class LightBeam
     public GameObject laserObj;
     private LineRenderer laser;
     private List<Vector3> laserIndicies = new List<Vector3>();
+    private GameObject creator;
+    private LightStart lightStarter;
+    public string color;
 
-
-    public LightBeam(Vector3 pos, Vector3 dir, float startWidth, float endwith, Color startColor, Color endColor, Material material)
+    public LightBeam(Vector3 pos, Vector3 dir, float startWidth, float endwith, Color startColor, Color endColor, Material material, GameObject creator, string color)
     {
         laser = new LineRenderer();
         laserObj = new GameObject();
         laserObj.name = "Laser Beam";
+        laserObj.tag = color;
 
         laser = this.laserObj.AddComponent(typeof(LineRenderer)) as LineRenderer;
         
@@ -22,12 +25,18 @@ public class LightBeam
         laser.startColor = startColor;
         laser.endColor = endColor;
         laser.material = material;
+        this.creator = creator;
+        lightStarter = creator.GetComponent<LightStart>();
 
         CastLaser(pos, dir);
 
         
     }
 
+    public void DestroyBeam()
+    {
+        GameObject.Destroy(laserObj);
+    }
     private void CastLaser(Vector3 pos, Vector3 dir)
     {
         laserIndicies.Add(pos);
@@ -45,16 +54,6 @@ public class LightBeam
         }
 
     }
-
-    private void ChangeColor(Color color)
-    {
-        laser.endColor = color;
-        Gradient newGradient = new Gradient();
-        Gradient currentGradient = laser.colorGradient;
-
-        
-    }
-
     private void CheckHit(RaycastHit hit, Vector3 direction)
     {
         if (hit.collider.tag.Equals("Mirror"))
@@ -66,19 +65,56 @@ public class LightBeam
         }
         else if (hit.collider.tag.Equals("Glass"))
         {
-            Vector3 pos = hit.point + new Vector3(.2f*direction.x, .2f*direction.y, 0);
+            Vector3 pos = hit.point + new Vector3(.21f*direction.x, .21f*direction.y, 0);
             Vector3 dir = direction;
 
             CastLaser(pos, dir);
         }
+        //Colors
+        else if (hit.collider.tag.Equals("Red Gem"))
+        {
+            Vector3 pos = hit.point + new Vector3(.1f * direction.x, .1f * direction.y, 0);
+            Vector3 dir = direction;
+            LightBeam beam = new LightBeam(pos, dir, laser.startWidth, laser.endWidth, Color.red, Color.red, laser.material, creator, "Red");
+            lightStarter.laserBeams.Add(beam);
+            laserIndicies.Add(hit.point);
+            UpdateLaser();
+        }
+        else if (hit.collider.tag.Equals("Yellow Gem"))
+        {
+            Vector3 pos = hit.point + new Vector3(.1f * direction.x, .1f * direction.y, 0);
+            Vector3 dir = direction;
+            LightBeam beam = new LightBeam(pos, dir, laser.startWidth, laser.endWidth, Color.yellow, Color.yellow, laser.material, creator, "Yellow");
+            lightStarter.laserBeams.Add(beam);
+            laserIndicies.Add(hit.point);
+            UpdateLaser();
+        }
+        else if (hit.collider.tag.Equals("Green Gem"))
+        {
+            Vector3 pos = hit.point + new Vector3(.1f * direction.x, .1f * direction.y, 0);
+            Vector3 dir = direction;
+            LightBeam beam = new LightBeam(pos, dir, laser.startWidth, laser.endWidth, Color.green, Color.green, laser.material, creator, "Green");
+            lightStarter.laserBeams.Add(beam);
+            laserIndicies.Add(hit.point);
+            UpdateLaser();
+        }
         else if (hit.collider.tag.Equals("Blue Gem"))
         {
-            ChangeColor(Color.blue);
-            Debug.Log("Blued");
-            Vector3 pos = hit.point + new Vector3(1f * direction.x, 1f * direction.y, 0);
+            Vector3 pos = hit.point + new Vector3(.1f * direction.x, .1f * direction.y, 0);
             Vector3 dir = direction;
-
-            CastLaser(pos, dir);
+            LightBeam beam = new LightBeam(pos, dir, laser.startWidth, laser.endWidth, Color.blue, Color.blue, laser.material, creator, "Blue");
+            lightStarter.laserBeams.Add(beam);
+            laserIndicies.Add(hit.point);
+            UpdateLaser();
+        }
+        else if (hit.collider.tag.Equals("Magenta Gem"))
+        {
+            Vector3 pos = hit.point + new Vector3(.1f * direction.x, .1f * direction.y, 0);
+            Vector3 dir = direction;
+            LightBeam beam = new LightBeam(pos, dir, laser.startWidth, laser.endWidth, Color.magenta, Color.magenta, laser.material, creator, "Magenta");
+            lightStarter.laserBeams.Add(beam);
+            laserIndicies.Add(hit.point);
+            UpdateLaser();
         }
         else
         {

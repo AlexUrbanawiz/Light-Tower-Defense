@@ -16,6 +16,7 @@ public class LightBeam
         laserObj.name = "Laser Beam";
 
         laser = this.laserObj.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        
         laser.startWidth = startWidth;
         laser.endWidth = endwith;
         laser.startColor = startColor;
@@ -48,7 +49,10 @@ public class LightBeam
     private void ChangeColor(Color color)
     {
         laser.endColor = color;
-        laser.startColor = color;
+        Gradient newGradient = new Gradient();
+        Gradient currentGradient = laser.colorGradient;
+
+        
     }
 
     private void CheckHit(RaycastHit hit, Vector3 direction)
